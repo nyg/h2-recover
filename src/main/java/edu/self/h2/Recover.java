@@ -10,13 +10,17 @@ public class Recover {
      */
     public static void main(String[] args) {
 
-        // open the store (in-memory if fileName is null)
-        final MVStore store = MVStore.open(args[0]);
+        if (args.length != 1) {
+            System.out.println("Path of H2 database file required!");
+            System.exit(1);
+        }
 
-        final MVMap<Object, Object> openMap = store.openMap("undoLog");
-        openMap.clear();
+        // open the store (in-memory if fileName is null)
+        MVStore store = MVStore.open(args[0]);
+        store.openMap("undoLog").clear();
 
         // close the store (this will persist changes)
         store.close();
+        System.out.println("Done!");
     }
 }
